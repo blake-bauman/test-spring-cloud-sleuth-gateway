@@ -1,0 +1,29 @@
+
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org: INFO
+    org.springframework.cloud.gateway.filter.factory: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %logger [traceId=%X{traceId}] [spanId=%X{spanId}] - %msg%n"
+
+spring.cloud.gateway:
+  routes:
+    - id: service_route
+      uri: http://localhost:8081
+      predicates:
+        - Path=/foo
+      filters:
+        - name: Retry
+          args:
+            retries: 3
+            statuses: BAD_GATEWAY
+            methods: GET,POST
+            backoff:
+              firstBackoff: 10ms
+              maxBackoff: 50ms
+              factor: 2
+              basedOnPreviousValue: false
