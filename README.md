@@ -1,11 +1,11 @@
 
-Sample project for demonstrating an issue with Spring Cloud Sleuth and Spring Cloud Gateway with missing OpenTracing span.
+Sample project for demonstrating an issue with Spring Cloud Gateway logs missing Sleuth trace data.
 
 
 * To build:  `mvn clean verify`
 * To run:  `mvn spring-boot:run`
 * To test:  `curl http://localhost:8080/foo`
-* Response will be an error, but the server's log message for the `org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler` logger with the error will be:  `... [traceId=] [spanId=] - [0b4b7679-2]  500 Server Error for HTTP GET "/foo"`
+* Response will be an error, but the server's log messages for the request will be similar to:  `... [traceId=] [spanId=] - ..."`
 * If you revert to previous release of Spring/SpringCloud:
 
 ```xml
@@ -14,7 +14,7 @@ Sample project for demonstrating an issue with Spring Cloud Sleuth and Spring Cl
 		<version.spring.cloud.release.train>Hoxton.SR8</version.spring.cloud.release.train>
 		<version.reactor.release.train>Dysprosium-SR12</version.reactor.release.train>
 ```
-* Log message with error will be similar to:  `[traceId=157b5667cef9ead0] [spanId=157b5667cef9ead0] - [0b4b7679-2]  500 Server Error for HTTP GET "/foo"`
+* Log messages for the request will be similar to:  `[traceId=157b5667cef9ead0] [spanId=157b5667cef9ead0] ..."`
 
 
 (Not a contribution)
